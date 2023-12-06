@@ -128,4 +128,36 @@ public class UserService {
         UserConstants.getUserResponseHashMap(),
         UserConstants.USER_RESPONSE_CODE_PREFIX.concat("9"));
   }
+
+  public APIResponse<Void> voidDeleteUserById(String userId) {
+    Optional<User> userOptional = userRepository.findById(userId);
+    if (userOptional.isEmpty())
+      return APIResponse.notFound(
+          null,
+          UserConstants.getUserResponseHashMap(),
+          UserConstants.USER_RESPONSE_CODE_PREFIX.concat("1"));
+
+    userRepository.deleteById(userId);
+    return APIResponse.noContent();
+  }
+
+  public void voidDeleteUserById2(String userId) {
+    Optional<User> userOptional = userRepository.findById(userId);
+    userRepository.deleteById(userId);
+  }
+
+  public APIResponse<Void> delete(String userId) {
+
+    try {
+      userRepository.deleteById(userId); // Replace this with your actual method
+      return APIResponse.ok(
+          null,
+          UserConstants.getUserResponseHashMap(),
+          UserConstants.USER_RESPONSE_CODE_PREFIX.concat("9"));
+    } catch (Exception e) {
+      log.error("Error deleting user: {}", e.getMessage());
+      return APIResponse.internalServerError(
+          null, UserConstants.getUserResponseHashMap(), UserConstants.GENERIC_RESPONSE_CODE);
+    }
+  }
 }

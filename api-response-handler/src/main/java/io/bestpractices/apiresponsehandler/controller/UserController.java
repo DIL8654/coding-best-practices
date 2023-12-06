@@ -48,4 +48,16 @@ public class UserController {
     APIResponse<UserDto> response = userService.deleteUserById(id);
     return ResponseEntity.status(HttpStatus.valueOf(response.getHttpStatus())).body(response);
   }
+
+  @DeleteMapping("/{id}/custom-void")
+  public APIResponse<Void> voidDeleteUser(@PathVariable String id) {
+    return userService.voidDeleteUserById(id);
+  }
+
+  @DeleteMapping("/{id}/standard-void")
+  public ResponseEntity<Void> voidDeleteUser2(@PathVariable String id) {
+    userService.deleteUserById(id);
+    // Assuming successful deletion, return HTTP 204 No Content
+    return ResponseEntity.noContent().build();
+  }
 }

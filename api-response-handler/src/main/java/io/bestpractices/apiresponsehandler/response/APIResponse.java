@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 /**
  * @author dilankam date 03/12/2023
@@ -118,5 +119,24 @@ public class APIResponse<T> {
         .internalCode(internalCode)
         .payload(payload)
         .build();
+  }
+
+  /**
+   * Wraps a ResponseEntity<Void> into an APIResponse<Void>.
+   *
+   * @param responseEntity The ResponseEntity<Void> to be wrapped.
+   * @return An APIResponse<Void> with the corresponding status and headers.
+   */
+  public static APIResponse<Void> fromResponseEntity(ResponseEntity<Void> responseEntity) {
+    return APIResponse.<Void>builder().httpStatus(responseEntity.getStatusCodeValue()).build();
+  }
+
+  /**
+   * Builds an APIResponse for a no-content operation.
+   *
+   * @return An APIResponse indicating a no-content operation.
+   */
+  public static APIResponse<Void> noContent() {
+    return APIResponse.<Void>builder().httpStatus(HttpStatus.NO_CONTENT.value()).build();
   }
 }
